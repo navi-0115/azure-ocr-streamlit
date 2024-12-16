@@ -14,7 +14,7 @@ def store_invoice_data(data):
             buyer_address=data.get("buyer_address"),
             issue_date=issue_date,
             order_id=data["order_id"],
-            item=data.get["items"],
+            items=data.get["items"],
             quantity=data["quantity"],
             unit_price=data["unit_price"],
             subtotal=data["subtotal"],
