@@ -9,27 +9,21 @@ def store_invoice_data(data):
         issue_date = datetime.strptime(data["issue_date"].replace("年", "-").replace("月", "-").replace("日", ""), "%Y-%m-%d").date()
         
         invoice = Invoice(
+            invoice_number=data["invoice_number"],
             buyer_name=data["buyer_name"],
             buyer_address=data.get("buyer_address"),
-            buyer_phone=data.get("buyer_phone"),
-            buyer_tax_id=data.get("buyer_tax_id"),
-            seller_name=data["seller_name"],
-            seller_address=data.get("seller_address"),
-            seller_phone=data.get("seller_phone"),
-            seller_tax_id=data.get("seller_tax_id"),
-            invoice_number=data["invoice_number"],
             issue_date=issue_date,
-            payment_method=data.get("payment_method"),
+            order_id=data["order_id"],
+            item=data.get["items"],
+            quantity=data["quantity"],
+            unit_price=data["unit_price"],
             subtotal=data["subtotal"],
-            tax_rate=data["tax_rate"],
-            tax_amount=data["tax_amount"],
+            amount=data["amount"],
+            discount=data.get("discount"),
+            shipping_cost=data.get("shipping_cost"),
+            outstanding_balance=data.get("outstanding_amount"),
             total_amount=data["total_amount"],
-            total_amount_in_words=data.get("total_amount_in_words"),
-            remarks=data.get("remarks"),
-            payee=data.get("payee"),
-            bank_name=data.get("bank_name"),
-            bank_account=data.get("bank_account"),
-            items=data.get("items"),  # Ensure items is a JSON object
+            notes=data.get("notes"),
         )
         session.add(invoice)
         session.commit()
