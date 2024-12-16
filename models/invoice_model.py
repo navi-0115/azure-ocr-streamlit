@@ -1,10 +1,30 @@
-from sqlalchemy import Column, Integer, String, Text
+from sqlalchemy import Column, Integer, String, Text, Float, Date, TIMESTAMP, JSON
+from sqlalchemy.sql import func
 from models.database_config import Base
 
 class Invoice(Base):
     __tablename__ = "invoices"
 
     id = Column(Integer, primary_key=True, index=True)
-    invoice_number = Column(String, index=True)
-    date = Column(String, index=True)
-    items = Column(Text)  # Store item details as a JSON string or plain text
+    buyer_name = Column(String(255), nullable=False)
+    buyer_address = Column(Text, nullable=True)
+    buyer_phone = Column(String(50), nullable=True)
+    buyer_tax_id = Column(String(50), nullable=True)
+    seller_name = Column(String(255), nullable=False)
+    seller_address = Column(Text, nullable=True)
+    seller_phone = Column(String(50), nullable=True)
+    seller_tax_id = Column(String(50), nullable=True)
+    invoice_number = Column(String(50), nullable=False, unique=True)
+    issue_date = Column(Date, nullable=False)
+    payment_method = Column(String(50), nullable=True)
+    subtotal = Column(Float, nullable=False)
+    tax_rate = Column(Float, nullable=False)
+    tax_amount = Column(Float, nullable=False)
+    total_amount = Column(Float, nullable=False)
+    total_amount_in_words = Column(Text, nullable=True)
+    remarks = Column(Text, nullable=True)
+    payee = Column(String(255), nullable=True)
+    bank_name = Column(String(255), nullable=True)
+    bank_account = Column(String(255), nullable=True)
+    items = Column(JSON, nullable=True)
+    created_at = Column(TIMESTAMP, server_default=func.now())
