@@ -19,10 +19,22 @@ This project is a web application that allows users to upload documents and extr
 ## Setup
 
 1. Clone the repository to your local machine.
+
+```
+git clone https://github.com/navinugraha/azure-ocr-documents-v2.git
+```
+
 2. Create a new virtual environment and activate it.
-3. Install the required packages using pip install -r requirements.txt.
+3. Install the required packages using:
+   ```
+   pip install -r requirements.txt
+   ```
 4. Create a .env file in the root directory and add the following variables:
-   - COG_SERVICE_KEY: Your Azure Cognitive Services key
-   - COG_SERVICE_ENDPOINT: Your Azure Cognitive Services endpoint
-   - DATABASE_URL: Your SQL Server connection string
+
+```
+   COG_SERVICE_KEY: Your Azure Cognitive Services key
+   COG_SERVICE_ENDPOINT: Your Azure Cognitive Services endpoint
+   DATABASE_URL: Your SQL Server connection string
+```
+
 5. Run the flask app using flask run or gunicorn.
