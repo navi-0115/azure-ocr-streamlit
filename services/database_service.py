@@ -26,7 +26,7 @@ def store_invoice_data(data):
             amount=data.get("amount"),
             discount=data.get("discount"),
             shipping_cost=data.get("shipping_cost"),
-            outstanding_balance=data.get("outstanding_amount"),
+            outstanding_balance=data.get("outstanding_balance"),
             total_amount=data.get("total_amount"),
             notes=data.get("notes"),
         )

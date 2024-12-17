@@ -28,14 +28,11 @@ def process_invoice():
         # Parse extracted text into structured data
         parsed_data = parse_invoice_data(extracted_text)
         print(f"Full parsed data: {parsed_data}")
-        print(type(parsed_data))  # Should print <class 'dict'>
-        print(parsed_data.keys()) 
 
         # Store the parsed data in the database
         store_invoice_data(parsed_data)
         
-
         return jsonify({"message": "Invoice processed successfully", "data": parsed_data}), 200
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"message": str(e)}), 500

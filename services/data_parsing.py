@@ -1,43 +1,43 @@
 import re
 def parse_invoice_data(text):
-        # Debugging output
+    # Debugging output
     print(f"DEBUG: Received text: '{text}'")
     
-    # Define regex patterns for different fields
+    # regex patterns
     patterns = {
-        "invoice_number": r"發票號碼[:：]\s*(\d+)",  # Matches '發票號碼: 39519'
-        "issue_date": r"日期[:：]\s*([\d年月日]+)",   # Matches '日期: 2012年2月19日'
-        "buyer_name": r"付款對象[:：]\s*(.+)",       # Matches '付款對象: Aaron Bergman'
-        "buyer_address": r"運送至[:：]\s*(.+)",      # Matches '運送至: 76017, Arlington, Texas, United States'
-        "outstanding_balance": r"到期餘額[:：]\s*\$(\d+\.\d+)",  # Matches '到期餘額: $22.17'
-        "subtotal": r"小計[:：]\s*\$(\d+\.\d+)",     # Matches '小計: $25.25'
-        "discount": r"折扣.*:\s*\$(\d+\.\d+)",      # Matches '折扣(20%): $5.05'
-        "shipping_cost": r"運費[:：]\s*\$(\d+\.\d+)",  # Matches '運費: $1.97'
-        "total_amount": r"總計[:：]\s*\$(\d+\.\d+)",  # Matches '總計: $22.17'
-        "order_id": r"訂單ID[:：]\s*(\S+)",         # Matches '訂單ID: CA-2012-AB10015140-40958'
-        "notes": r"備註[:：]\s*(.+)",               # Matches '備註: 感謝您的業務!'
+        "invoice_number": r"發票號碼[:：]\s*(\d+)",  
+        "issue_date": r"日期[:：]\s*([\d年月日]+)",  
+        "buyer_name": r"付款對象[:：]\s*(.+)",      
+        "buyer_address": r"運送至[:：]\s*(.+)",      
+        "outstanding_balance": r"到期餘額[:：]\s*\$(\d+\.\d+)", 
+        "subtotal": r"小計[:：]\s*\$(\d+\.\d+)",    
+        "discount": r"折扣.*:\s*\$(\d+\.\d+)",     
+        "shipping_cost": r"運費[:：]\s*\$(\d+\.\d+)", 
+        "total_amount": r"總計[:：]\s*\$(\d+\.\d+)",  
+        "order_id": r"訂單ID[:：]\s*(\S+)",         
+        "notes": r"備註[:：]\s*(.+)",            
     }
     
     # Initialize parsed data dictionary
     parsed_data = {}
     
-        # Loop through patterns to find matches
+    # Loop through patterns to find matches
     for field, pattern in patterns.items():
         match = re.search(pattern, text)
         if match:
-            parsed_data[field] = match.group(1)  # Extract captured group
-    
-    # Additional Parsing for Items Section
-    items_pattern = r"(.+?)\s+(\d+)\s+\$(\d+\.\d+)"  # Matches: item_name, quantity, price
+            parsed_data[field] = match.group(1)  
+            
+    # parsing for Items Section
+    items_pattern = r"(.+?)\s+(\d+)\s+\$(\d+\.\d+)" 
     items = []
     items_section_start = False
     
     for line in text.splitlines():
         line = line.strip()
-        if "項目" in line:  # Start of items section
+        if "項目" in line:  
             items_section_start = True
             continue
-        if items_section_start and line.startswith("小計"):  # End of items section
+        if items_section_start and line.startswith("小計"):  
             break
         
         # Match item lines with regex
