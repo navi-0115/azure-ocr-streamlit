@@ -1,8 +1,8 @@
-"""modify-invoice-model-v2
+"""modify-invoice-model-to-traditional-chinese-nullable
 
-Revision ID: cd04d83d5e1d
-Revises: 5093b81adf3d
-Create Date: 2024-12-16 23:53:18.223715
+Revision ID: 4a2d1033c62b
+Revises: 
+Create Date: 2024-12-17 09:41:12.918982
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'cd04d83d5e1d'
-down_revision: Union[str, None] = '5093b81adf3d'
+revision: str = '4a2d1033c62b'
+down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -25,7 +25,7 @@ def upgrade() -> None:
     sa.Column('invoice_number', sa.String(length=50), nullable=False),
     sa.Column('buyer_name', sa.String(length=255), nullable=False),
     sa.Column('buyer_address', sa.Text(), nullable=True),
-    sa.Column('issue_date', sa.Date(), nullable=False),
+    sa.Column('issue_date', sa.Date(), nullable=True),
     sa.Column('order_id', sa.String(length=50), nullable=True),
     sa.Column('items', sa.Text(), nullable=True),
     sa.Column('quantity', sa.Integer(), nullable=True),
