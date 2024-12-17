@@ -21,7 +21,7 @@ This project is a web application that allows users to upload documents and extr
 1. Clone the repository to your local machine.
 
 ```
-git clone https://github.com/navinugraha/azure-ocr-documents-v2.git
+git clone https://github.com/navi-0115/azure-ocr-documents-v2.git
 ```
 
 2. Create a new virtual environment and activate it.
