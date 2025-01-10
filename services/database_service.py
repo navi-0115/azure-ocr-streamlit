@@ -15,20 +15,12 @@ def store_invoice_data(data):
         
         invoice = Invoice(
             invoice_number=data.get("invoice_number"),
-            buyer_name=data.get("buyer_name"),
-            buyer_address=data.get("buyer_address"),
+            unified_number=data.get("unified_number"),
             issue_date=data.get("issue_date"),
-            order_id=data.get("order_id"),
             items=data.get("items"),
-            quantity=data.get("quantity"),
-            unit_price=data.get("unit_price"),
-            subtotal=data.get("subtotal"),
+            tax=data.get("tax"),
             amount=data.get("amount"),
-            discount=data.get("discount"),
-            shipping_cost=data.get("shipping_cost"),
-            outstanding_balance=data.get("outstanding_balance"),
             total_amount=data.get("total_amount"),
-            notes=data.get("notes"),
         )
         session.add(invoice)
         session.commit()
