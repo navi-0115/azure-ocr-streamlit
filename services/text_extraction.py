@@ -5,8 +5,8 @@ from azure.cognitiveservices.vision.computervision.models import OperationStatus
 import os
 
 def extract_text(uploaded_file):
-    key = os.getenv("COG_SERVICE_KEY")
-    endpoint = os.getenv("COG_SERVICE_ENDPOINT")
+    key = os.getenv("AZURE_SERVICE_KEY")
+    endpoint = os.getenv("AZURE_SERVICE_ENDPOINT")
 
     computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))
 

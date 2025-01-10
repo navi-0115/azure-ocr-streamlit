@@ -6,6 +6,7 @@ from models.database_config import Base
 from models.invoice_model import Invoice
 from dotenv import load_dotenv
 import os
+from alembic import context
 
 # Load .env file if present
 load_dotenv()
