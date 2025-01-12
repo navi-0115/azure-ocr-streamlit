@@ -79,5 +79,5 @@ def extract_text(uploaded_file):
     extracted_text = ""
     for page in result.pages:
         for line in page.lines:
-            extracted_text += line.content
+            extracted_text += line.content + "\n"
     return extracted_text.strip()   
