@@ -62,23 +62,22 @@ def extract_text(uploaded_file):
         endpoint=endpoint, credential=AzureKeyCredential(key)
     )
     
-    file_content = uploaded_file.read()
-
-    file_object = BytesIO(file_content)
-    content = file_object.read().decode("utf-8")
+    document_content = uploaded_file.read()
 
     # Read file content
     poller = document_intelligence_client.begin_analyze_document(
-            "prebuilt-invoice", AnalyzeDocumentRequest(content)
+            model_id="prebuilt-layout", body=document_content
         )
-
+    
+    print(poller)
+    
     # Wait for the operation to complete
-    result: AnalyzeResult = poller.result()
+    result  = poller.result()
+    print(type(result))
 
     # Extract text from the result
     extracted_text = ""
     for page in result.pages:
         for line in page.lines:
-            extracted_text += line.content + "\n"
-
-    return extracted_text.strip()
+            extracted_text += line.content
+    return extracted_text.strip()   

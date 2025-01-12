@@ -18,17 +18,20 @@ st.title("Invoice OCR and Data Extraction")
 
 # Upload PDF
 uploaded_file = st.file_uploader("Upload a PDF invoice", type=["pdf", "jpg", "png"])
+print(f"Type of uploaded file: {type(uploaded_file)}")
 if uploaded_file is not None:
     try:
         # Extract text using Azure OCR
         extracted_text = extract_text(uploaded_file)
         st.write("Extracted Text:")
         st.text(extracted_text)
+        print(f"Type of extracted_text: {type(extracted_text)}")
 
         # Parse extracted text into structured data
         parsed_data = parse_invoice_data(extracted_text)
         st.write("Parsed Data:")
         st.json(parsed_data)
+        print(f"Type of parsed_data: {type(parsed_data)}")
 
         # Store the parsed data in the database
         store_invoice_data(parsed_data)
