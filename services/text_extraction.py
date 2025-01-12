@@ -46,8 +46,9 @@
 #     import time
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.documentintelligence import DocumentIntelligenceClient
-from azure.ai.documentintelligence.models import AnalyzeResult, AnalyzeDocumentRequest, OperationStatusCodes
+from azure.ai.documentintelligence.models import AnalyzeResult, AnalyzeDocumentRequest
 import os
+from io import BytesIO 
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -60,15 +61,19 @@ def extract_text(uploaded_file):
     document_intelligence_client = DocumentIntelligenceClient(
         endpoint=endpoint, credential=AzureKeyCredential(key)
     )
+    
+    file_content = uploaded_file.read()
+
+    file_object = BytesIO(file_content)
+    content = file_object.read().decode("utf-8")
 
     # Read file content
-    with uploaded_file.stream as file_stream:
-        poller = document_intelligence_client.begin_analyze_document(
-            "prebuilt-invoice", document=file_stream
+    poller = document_intelligence_client.begin_analyze_document(
+            "prebuilt-invoice", AnalyzeDocumentRequest(content)
         )
 
     # Wait for the operation to complete
-    result = poller.result()
+    result: AnalyzeResult = poller.result()
 
     # Extract text from the result
     extracted_text = ""

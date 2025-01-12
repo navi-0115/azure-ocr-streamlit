@@ -2,10 +2,10 @@ import re
 from datetime import datetime
 
 def parse_invoice_data(text):
-    """
-    Parse extracted text into structured data.
-    """
-    # Debugging output
+
+    if hasattr(text, "read"): 
+        text = text.read().decode("utf-8")
+    
     print(f"DEBUG: Received text: '{text}'")
 
     # Regex patterns for the required fields
@@ -13,6 +13,7 @@ def parse_invoice_data(text):
         "invoice_number": r"FU\s*\d+", 
         "unified_number": r"統一編號[:：]\s*(\d+)",  
         "date": r"\d+\s*年\s*\d+\s*月\s*\d+\s*日",  
+        "items": r"品名\s*[\n\r]+(.+?)\s*[\n\r]+",
         "amount": r"應稅銷售額合計[:：]\s*([\d,]+)", 
         "tax": r"營業稅[:：]\s*([\d,]+)",  
         "total_amount": r"總計[:：]\s*([\d,]+)",  
@@ -37,7 +38,7 @@ def parse_invoice_data(text):
     if item_match:
         # Extract only the item name (remove any additional text)
         item_name = item_match.group(1).strip()
-        parsed_data["item"] = item_name.split("\n")[0].strip()  # Take the first line only
+        parsed_data["items"] = item_name.split("\n")[0].strip()  # Take the first line only
 
     return parsed_data
 

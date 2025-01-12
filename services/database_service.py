@@ -5,13 +5,6 @@ from models.invoice_model import Invoice
 def store_invoice_data(data):
     session = get_db_session()
     try:
-        # Convert cleaned string to date
-        # try:
-        #     issue_date = datetime.strptime(cleaned_issue_date, "%Y-%m-%d").date()
-        # except ValueError as e:
-        #     raise ValueError(f"Failed to parse issue_date '{cleaned_issue_date}': {e}")
-        
-        # print(f"Parsed issue_date: {issue_date}")  # Debugging
         
         invoice = Invoice(
             invoice_number=data.get("invoice_number"),

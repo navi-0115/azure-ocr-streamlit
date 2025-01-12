@@ -17,7 +17,7 @@ os.makedirs("outputs", exist_ok=True)
 st.title("Invoice OCR and Data Extraction")
 
 # Upload PDF
-uploaded_file = st.file_uploader("Upload a PDF invoice", type="pdf")
+uploaded_file = st.file_uploader("Upload a PDF invoice", type=["pdf", "jpg", "png"])
 if uploaded_file is not None:
     try:
         # Extract text using Azure OCR
