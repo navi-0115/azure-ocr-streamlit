@@ -10,12 +10,12 @@ def parse_invoice_data(text):
 
     # Regex patterns for the required fields
     patterns = {
-        "invoice_number": r"FU\s*\d+",  # Invoice number starting with FU (e.g., FU 398123123)
-        "unified_number": r"統一編號[:：]\s*(\d+)",  # Unified business number
-        "date": r"\d+\s*年\s*\d+\s*月\s*\d+\s*日",  # Date in the format 113 年 12 月 3 日
-        "amount": r"應稅銷售額合計[:：]\s*([\d,]+)",  # Taxable sales total
-        "tax": r"營業稅[:：]\s*([\d,]+)",  # Business tax
-        "total_amount": r"總計[:：]\s*([\d,]+)",  # Total amount
+        "invoice_number": r"FU\s*\d+", 
+        "unified_number": r"統一編號[:：]\s*(\d+)",  
+        "date": r"\d+\s*年\s*\d+\s*月\s*\d+\s*日",  
+        "amount": r"應稅銷售額合計[:：]\s*([\d,]+)", 
+        "tax": r"營業稅[:：]\s*([\d,]+)",  
+        "total_amount": r"總計[:：]\s*([\d,]+)",  
     }
 
     # Initialize parsed data dictionary
@@ -26,7 +26,6 @@ def parse_invoice_data(text):
         match = re.search(pattern, text)
         if match:
             if field == "date":
-                # Convert date format from "113 年 12 月 3 日" to "yyyy-mm-dd"
                 raw_date = match.group(0).strip()
                 parsed_data[field] = convert_date_format(raw_date)
             else:
@@ -51,8 +50,8 @@ def convert_date_format(raw_date):
     date_pattern = r"(\d+)\s*年\s*(\d+)\s*月\s*(\d+)\s*日"
     match = re.search(date_pattern, raw_date)
     if match:
-        year = int(match.group(1)) + 1911  # Convert ROC year to Gregorian year
+        year = int(match.group(1)) + 1911 
         month = int(match.group(2))
         day = int(match.group(3))
         return f"{year:04d}-{month:02d}-{day:02d}"
-    return raw_date  # Return original if conversion fails
+    return raw_date 

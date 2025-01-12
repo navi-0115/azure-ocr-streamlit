@@ -1,8 +1,8 @@
-"""create new table
+"""adjust invoice table
 
-Revision ID: 374c83607170
+Revision ID: 5259ae4ce1da
 Revises: 
-Create Date: 2025-01-10 14:18:10.848927
+Create Date: 2025-01-10 14:44:04.928475
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '374c83607170'
+revision: str = '5259ae4ce1da'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
