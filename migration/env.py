@@ -2,7 +2,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from models.database_config import Base 
+from models.database_init import Base 
 from models.invoice_model import Invoice
 from dotenv import load_dotenv
 import os
