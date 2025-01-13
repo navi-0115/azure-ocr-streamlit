@@ -7,17 +7,29 @@ from utils.invoice_types import INVOICE_TYPES
 def store_invoice_data(data):
     session = get_db_session()
     try:
-        # Parse and store invoice type
-        invoice_type_name = data.get("invoice_type")
-        # Validate invoice type
-        if invoice_type_name not in INVOICE_TYPES:
-            raise ValueError(f"Invalid invoice type: {invoice_type_name}")
+        invoice_type_name = data.get("invoice_type") 
+        if not invoice_type_name:
+            raise ValueError("Invoice type is missing in the data.")
+
+        # Validate invoice type against INVOICE_TYPES values
+        valid_invoice_types = list(INVOICE_TYPES.values())
+        if invoice_type_name not in valid_invoice_types:
+            raise ValueError(f"Invalid invoice type: {invoice_type_name}. Valid types are: {valid_invoice_types}")
 
         invoice_type = session.query(InvoiceTypes).filter_by(name=invoice_type_name).first()
         if not invoice_type:
             invoice_type = InvoiceTypes(name=invoice_type_name)
             session.add(invoice_type)
             session.commit()
+            
+        # Helper function to safely convert to float
+        def to_float(value):
+            if isinstance(value, str):
+                return float(value.replace(",", ""))  
+            elif isinstance(value, (int, float)):
+                return float(value)  
+            else:
+                return 0.0 
 
         # Parse and store invoice
         invoice = Invoice(
@@ -25,9 +37,9 @@ def store_invoice_data(data):
             invoice_type_id=invoice_type.id,
             unified_number=data.get("unified_number"),
             issue_date=datetime.strptime(data.get("issue_date"), "%Y-%m-%d").date(),
-            total_before_tax=float(data.get("total_before_tax", 0).replace(",", "")),
-            tax=float(data.get("tax", 0).replace(",", "")),
-            total_after_tax=float(data.get("total_after_tax", 0).replace(",", "")),
+            total_before_tax=to_float(data.get("total_before_tax", 0)),
+            tax=to_float(data.get("tax", 0)),
+            total_after_tax=to_float(data.get("total_after_tax", 0)),
         )
         session.add(invoice)
         session.commit()
@@ -37,9 +49,9 @@ def store_invoice_data(data):
             # Create InvoiceItem
             invoice_item = InvoiceItem(
                 item_name=item.get("item_name"),
-                quantity=item.get("quantity"),
-                unit_price=item.get("unit_price"),
-                amount=item.get("amount"),
+                quantity=int(item.get("quantity", 0)),  
+                unit_price=to_float(item.get("unit_price", 0)),  
+                amount=to_float(item.get("amount", 0)),  
             )
             session.add(invoice_item)
             session.commit()
