@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, Float, Date, TIMESTAMP, JS
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from models.database_init import Base
-from models.invoice_items_association import invoice_item_association
+from models.invoice_items_association import InvoiceItemsAssociation
 
 class Invoice(Base):
     __tablename__ = "invoices"
@@ -20,5 +20,5 @@ class Invoice(Base):
     
     #relationship
     invoice_type = relationship("InvoiceTypes", back_populates="invoices")
-    invoice_items = relationship("InvoiceItems", secondary=invoice_item_association, back_populates="invoices")
+    invoice_items = relationship("InvoiceItems", secondary=InvoiceItemsAssociation, back_populates="invoices")
 
