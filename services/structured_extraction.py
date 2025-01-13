@@ -67,11 +67,12 @@ def extract_structured_data(result):
                 for item in items_field.get("valueArray", []):
                     item_data = {
                         "item_name": item.get("valueObject", {}).get("item_name", {}).get("content", "").strip(),
-                        "quantity": item.get("valueObject", {}).get("quantity", {}).get("content", "").strip(),
-                        "unit_price": item.get("valueObject", {}).get("unit_price", {}).get("content", "").strip(),
-                        "amount": item.get("valueObject", {}).get("amount", {}).get("content", "").strip(),
+                        "quantity": item.get("valueObject", {}).get("quantity", {}).get("content", "0").strip(),
+                        "unit_price": item.get("valueObject", {}).get("unit_price", {}).get("content", "0").strip(),
+                        "amount": item.get("valueObject", {}).get("amount", {}).get("content", "0").strip(),
                     }
                     invoice_items.append(item_data)
             structured_data["invoice_items"] = invoice_items
-
+            
+    print("structured data:", structured_data)
     return structured_data

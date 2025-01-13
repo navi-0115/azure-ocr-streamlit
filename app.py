@@ -25,15 +25,18 @@ if uploaded_file is not None:
         structured_data = extract_text(uploaded_file)
         st.write("Structured Data:")
         st.json(structured_data)
+        print("streamlit structured data:", structured_data)
 
         # Parse the structured data
         parsed_data = parse_invoice_data(structured_data)
         st.write("Parsed Data:")
         st.json(parsed_data)
+        print("streamlit parsed data:", parsed_data)
 
         # Store the parsed data in the database
         store_invoice_data(parsed_data)
         st.success("Data stored in the database!")
+        print("Data stored in the database!")
 
         # Display parsed data as a table
         invoice_df = pd.DataFrame(parsed_data["items"])
@@ -60,13 +63,13 @@ if uploaded_file is not None:
         st.error(f"An error occurred: {str(e)}")
 
 # Display the invoices stored in the last 30 days
-st.write("Invoices from the last 30 days:")
-db = get_db_session() 
-recent_invoices = get_recent_invoices(db, days=30)  
-if recent_invoices:
-    st.dataframe(pd.DataFrame(recent_invoices))
-else:
-    st.write("No invoices found in the last 30 days.")
+# st.write("Invoices from the last 30 days:")
+# db = get_db_session() 
+# recent_invoices = get_recent_invoices(db, days=30)  
+# if recent_invoices:
+#     st.dataframe(pd.DataFrame(recent_invoices))
+# else:
+#     st.write("No invoices found in the last 30 days.")
 
 
 

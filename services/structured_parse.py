@@ -5,8 +5,10 @@ def parse_invoice_data(structured_data):
     """
     Parse structured data extracted from the Azure Document Intelligence API.
     """
+    print("structured data in parsing logic:", structured_data)
     parsed_data = {}
 
+    
     # Extract and process fields
     parsed_data["invoice_number"] = structured_data.get("invoice_number", "")
     parsed_data["unified_number"] = structured_data.get("unified_number", "")
@@ -26,6 +28,7 @@ def parse_invoice_data(structured_data):
             "amount": float(item.get("amount", "0").replace(",", "")),
         })
 
+    print("parsed data in file logic:", parsed_data)
     return parsed_data
 
 def convert_date_format(raw_date):
