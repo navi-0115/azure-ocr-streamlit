@@ -23,8 +23,8 @@ if uploaded_file is not None:
     try:
         # Extract text using Azure OCR
         structured_data = extract_text(uploaded_file)
-        st.write("Structured Data:")
-        st.json(structured_data)
+        # st.write("Structured Data:")
+        # st.json(structured_data)
         print("streamlit structured data:", structured_data)
 
         # Parse the structured data

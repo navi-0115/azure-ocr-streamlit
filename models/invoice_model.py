@@ -15,7 +15,7 @@ class Invoice(Base):
     __tablename__ = "invoices"
 
     id = Column(Integer, primary_key=True, index=True)
-    invoice_number = Column(String(50), nullable=False, unique=True)
+    invoice_number = Column(String(50), nullable=False)
     invoice_type_id = Column(Integer, ForeignKey("invoice_types.id", ondelete="CASCADE"), nullable=True)
     unified_number = Column(String(50), nullable=True)
     issue_date = Column(Date, nullable=True)
