@@ -58,9 +58,10 @@ def store_invoice_data(data):
     finally:
         session.close()
 
-def get_recent_invoices(db: Session):
-    thirty_days_ago = datetime.now() - timedelta(days=30)
-    return db.query(Invoice).filter(Invoice.created_at >= thirty_days_ago).all()
+def get_recent_invoices(db: Session, days: int = 30):
+
+    start_date = datetime.now() - timedelta(days=days)
+    return db.query(Invoice).filter(Invoice.created_at >= start_date).all()
 
 # from datetime import datetime, timedelta
 # from sqlalchemy.orm import Session

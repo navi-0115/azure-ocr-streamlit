@@ -2,17 +2,15 @@ import streamlit as st
 import pandas as pd
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-# from services.text_extraction import extract_text
-# from services.data_parsing import parse_invoice_data
 from services.structured_extraction import extract_text
 from services.structured_parse import parse_invoice_data
 from services.database_service import store_invoice_data, get_recent_invoices
+from models.database_config import get_db_session  # Import get_db_session
 import os
 
 # Load environment variables
 load_dotenv()
 
-# Create uploads and outputs directories if they don't exist
 os.makedirs("uploads", exist_ok=True)
 os.makedirs("outputs", exist_ok=True)
 
@@ -44,7 +42,8 @@ if uploaded_file is not None:
         st.dataframe(invoice_df)
 
         # Prepare CSV download for last 30 days
-        recent_invoices = get_recent_invoices(days=30)
+        db = get_db_session() 
+        recent_invoices = get_recent_invoices(db, days=30)  
         csv_path = os.path.join("outputs", "recent_invoices.csv")
         recent_df = pd.DataFrame(recent_invoices)
         recent_df.to_csv(csv_path, index=False)
@@ -62,7 +61,8 @@ if uploaded_file is not None:
 
 # Display the invoices stored in the last 30 days
 st.write("Invoices from the last 30 days:")
-recent_invoices = get_recent_invoices(days=30)
+db = get_db_session() 
+recent_invoices = get_recent_invoices(db, days=30)  
 if recent_invoices:
     st.dataframe(pd.DataFrame(recent_invoices))
 else:
