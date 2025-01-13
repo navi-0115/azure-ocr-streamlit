@@ -11,7 +11,7 @@ class Invoice(Base):
     invoice_type_id = Column(Integer, ForeignKey("invoice_types.id"), nullable=True)
     unified_number = Column(String(50), nullable=True)
     issue_date = Column(Date, nullable=True)
-    invoice_items_id = Column(Integer, foreign_key=True)
+    invoice_items_id = Column(Integer)
     total_before_tax = Column(Float, nullable=True)
     tax = Column(Float, nullable=True)
     total_after_tax = Column(Float, nullable= True)
