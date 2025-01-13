@@ -26,7 +26,7 @@ def parse_invoice_data(text):
     for field, pattern in patterns.items():
         match = re.search(pattern, text)
         if match:
-            if field == "date":
+            if field == "issue_date":
                 raw_date = match.group(0).strip()
                 parsed_data[field] = convert_date_format(raw_date)
             else:
