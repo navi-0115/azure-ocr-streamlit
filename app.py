@@ -2,8 +2,10 @@ import streamlit as st
 import pandas as pd
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from services.text_extraction import extract_text
-from services.data_parsing import parse_invoice_data
+# from services.text_extraction import extract_text
+# from services.data_parsing import parse_invoice_data
+from services.structured_extraction import extract_text
+from services.structured_parse import parse_invoice_data
 from services.database_service import store_invoice_data, get_recent_invoices
 import os
 
@@ -22,12 +24,12 @@ uploaded_file = st.file_uploader("Upload a PDF invoice", type=["pdf", "jpg", "pn
 if uploaded_file is not None:
     try:
         # Extract text using Azure OCR
-        extracted_text = extract_text(uploaded_file)
-        st.write("Extracted Text:")
-        st.text(extracted_text)
+        structured_data = extract_text(uploaded_file)
+        st.write("Structured Data:")
+        st.json(structured_data)
 
-        # Parse extracted text into structured data
-        parsed_data = parse_invoice_data(extracted_text)
+        # Parse the structured data
+        parsed_data = parse_invoice_data(structured_data)
         st.write("Parsed Data:")
         st.json(parsed_data)
 
