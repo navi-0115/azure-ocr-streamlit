@@ -12,9 +12,9 @@ def store_invoice_data(data):
             raise ValueError("Invoice type is missing in the data.")
 
         # Validate invoice type against INVOICE_TYPES values
-        valid_invoice_types = list(INVOICE_TYPES.values())
-        if invoice_type_name not in valid_invoice_types:
-            raise ValueError(f"Invalid invoice type: {invoice_type_name}. Valid types are: {valid_invoice_types}")
+        # valid_invoice_types = list(INVOICE_TYPES.values())
+        # if invoice_type_name not in valid_invoice_types:
+        #     raise ValueError(f"Invalid invoice type: {invoice_type_name}. Valid types are: {valid_invoice_types}")
 
         invoice_type = session.query(InvoiceTypes).filter_by(name=invoice_type_name).first()
         if not invoice_type:
@@ -71,9 +71,26 @@ def store_invoice_data(data):
         session.close()
 
 def get_recent_invoices(db: Session, days: int = 30):
-
     start_date = datetime.now() - timedelta(days=days)
-    return db.query(Invoice).filter(Invoice.created_at >= start_date).all()
+    invoices = db.query(Invoice).filter(Invoice.created_at >= start_date).all()
+
+    # Convert SQLAlchemy model objects to dictionaries
+    invoice_dicts = []
+    for invoice in invoices:
+        invoice_dict = {
+            "invoice_number": invoice.invoice_number,
+            "invoice_type": invoice.invoice_types.name if invoice.invoice_types else None,
+            "unified_number": invoice.unified_number,
+            "issue_date": invoice.issue_date.isoformat() if invoice.issue_date else None,
+            "total_before_tax": invoice.total_before_tax,
+            "tax": invoice.tax,
+            "total_after_tax": invoice.total_after_tax,
+            "created_at": invoice.created_at.isoformat() if invoice.created_at else None,
+            "updated_at": invoice.updated_at.isoformat() if invoice.updated_at else None,
+        }
+        invoice_dicts.append(invoice_dict)
+
+    return invoice_dicts
 
 # from datetime import datetime, timedelta
 # from sqlalchemy.orm import Session

@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from services.structured_extraction import extract_text
 from services.structured_parse import parse_invoice_data
 from services.database_service import store_invoice_data, get_recent_invoices
-from models.database_config import get_db_session  # Import get_db_session
+from models.database_config import get_db_session  
 import os
 
 # Load environment variables
@@ -38,18 +38,17 @@ if uploaded_file is not None:
         st.success("Data stored in the database!")
         print("Data stored in the database!")
 
-        # Display parsed data as a table
-        invoice_df = pd.DataFrame(parsed_data["items"])
-        invoice_df["invoice_number"] = parsed_data.get("invoice_number")
-        st.write("Invoice Items Table:")
-        st.dataframe(invoice_df)
+        # # Display parsed data as a table
+        # invoice_df = pd.DataFrame(parsed_data["invoice_items"])
+        # invoice_df["invoice_number"] = parsed_data.get("invoice_number")
+        # st.write("Invoice Items Table:")
+        # st.dataframe(invoice_df)
 
         # Prepare CSV download for last 30 days
-        db = get_db_session() 
+        db = get_db_session()
         recent_invoices = get_recent_invoices(db, days=30)  
         csv_path = os.path.join("outputs", "recent_invoices.csv")
-        recent_df = pd.DataFrame(recent_invoices)
-        recent_df.to_csv(csv_path, index=False)
+        recent_df = pd.DataFrame(recent_invoices) 
 
         # Provide download link
         st.download_button(
@@ -57,7 +56,7 @@ if uploaded_file is not None:
             data=recent_df.to_csv(index=False).encode("utf-8"),
             file_name="recent_invoices.csv",
             mime="text/csv",
-        )
+)
 
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
