@@ -16,7 +16,7 @@ class Invoice(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     invoice_number = Column(String(50), nullable=False, unique=True)
-    invoice_type_id = Column(Integer, nullable=True)
+    invoice_type_id = Column(Integer, ForeignKey("invoices_types.id", ondelete="CASCADE"), nullable=True)
     unified_number = Column(String(50), nullable=True)
     issue_date = Column(Date, nullable=True)
     total_before_tax = Column(Float, nullable=True)
@@ -25,9 +25,11 @@ class Invoice(Base):
     created_at = Column(TIMESTAMP, nullable=False, default=func.now())
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
-    # Define the relationship with InvoiceItems
+    # Define the relationship
+    invoice_types = relationship("InvoiceTypes", back_populates="invoices")
+    
     invoice_items = relationship(
-        "InvoiceItems",
+        "InvoiceItem",
         secondary="invoice_items_association",
         back_populates="invoices"
     )
@@ -36,7 +38,6 @@ class InvoiceItem(Base):
     __tablename__ = "invoice_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    invoice_id = Column(Integer, ForeignKey("invoices.id", ondelete="CASCADE"), nullable=False)
     item_name = Column(String(255), nullable=False)
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Float, nullable=False)
@@ -44,9 +45,18 @@ class InvoiceItem(Base):
     created_at = Column(TIMESTAMP, nullable=False, default=func.now())
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
-    # Define the relationship back to Invoice
+    # Define the relationship
     invoices = relationship(
         "Invoice",
         secondary="invoice_items_association",
         back_populates="invoice_items"
     )
+
+    class InvoiceTypes(Base):
+        __tablename__ = "invoice_types"
+        id = Column(Integer, primary_key=True, index=True)
+        name = Column(String(50), nullable=False)
+        created_at = Column(TIMESTAMP, nullable=False, default=func.now())
+        updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
+        
+        invoices = relationship("Invoice", back_populates="invoice_types")
