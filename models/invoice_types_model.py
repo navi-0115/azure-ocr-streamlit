@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, Float, Date, TIMESTAMP, JS
 from sqlalchemy.sql import func
 from models.database_init import Base
 
-class InvoiceType(Base):
+class InvoiceTypes(Base):
     __tablename__ = "invoice_types"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), nullable=False)
