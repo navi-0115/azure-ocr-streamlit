@@ -26,9 +26,9 @@ def store_invoice_data(data):
             invoice_type_id=invoice_type.id,
             unified_number=data.get("unified_number"),
             issue_date=datetime.strptime(data.get("issue_date"), "%Y-%m-%d").date(),
-            total_before_tax=data.get("total_before_tax"),
-            tax=data.get("tax"),
-            total_after_tax=data.get("total_after_tax"),
+            total_before_tax=float(data.get("total_before_tax", 0).replace(",", "")),
+            tax=float(data.get("tax", 0).replace(",", "")),
+            total_after_tax=float(data.get("total_after_tax", 0).replace(",", "")),
         )
         session.add(invoice)
         session.commit()
