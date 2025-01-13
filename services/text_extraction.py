@@ -3,7 +3,7 @@ from azure.ai.documentintelligence import DocumentIntelligenceClient
 from azure.ai.documentintelligence.models import AnalyzeResult, AnalyzeDocumentRequest
 import os
 import base64
-from io import BytesIO 
+import time
 import streamlit as st
 
 from dotenv import load_dotenv
@@ -41,15 +41,28 @@ def extract_text(uploaded_file):
             )
         
         # Wait for the operation to complete
-        result  = poller.result()
-        print("result type:", type(result))
-        
-        # Extract text from the result
+        print("Processing the document with Azure Document Intelligence...")
+        result = poller.result()
+        print(result)
+
+        # Process the result as needed
+        # For example, print the extracted content
         extracted_text = ""
         for page in result.pages:
+            print(f"Page {page.page_number}:")
             for line in page.lines:
                 extracted_text += line.content + "\n"
-        return extracted_text.strip()   
+                print(line.content)
+        return extracted_text.strip()
+        
+        # print("result type:", type(result))
+        
+        # # Extract text from the result
+        # extracted_text = ""
+        # for page in result.pages:
+        #     for line in page.lines:
+        #         extracted_text += line.content + "\n"
+        # return extracted_text.strip()   
             
     except Exception as e:
         print(f"An error occurred during document analysis: {e}")
