@@ -34,7 +34,7 @@ if uploaded_file is not None:
         print(f"Type of parsed_data: {type(parsed_data)}")
 
         # Store the parsed data in the database
-        store_invoice_data(parsed_data)
+        store_data = store_invoice_data(parsed_data)
         st.success("Data stored in the database!")
 
         # Convert parsed data to CSV

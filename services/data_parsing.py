@@ -12,7 +12,7 @@ def parse_invoice_data(text):
     patterns = {
         "invoice_number": r"FU\s*\d+", 
         "unified_number": r"統一編號[:：]\s*(\d+)",  
-        "date": r"\d+\s*年\s*\d+\s*月\s*\d+\s*日",  
+        "issue_date": r"\d+\s*年\s*\d+\s*月\s*\d+\s*日",  
         "items": r"品名\s*[\n\r]+(.+?)\s*[\n\r]+",
         "amount": r"應稅銷售額合計[:：]\s*([\d,]+)", 
         "tax": r"營業稅[:：]\s*([\d,]+)",  
