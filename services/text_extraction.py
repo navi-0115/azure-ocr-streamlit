@@ -21,6 +21,7 @@ def load_file_as_base64(uploaded_file):
 def extract_text(uploaded_file):
     key = os.getenv("AZURE_SERVICE_KEY")
     endpoint = os.getenv("AZURE_SERVICE_ENDPOINT")
+    model_id = os.getenv("AZURE_MODEL_ID")
     
     if not key or not endpoint:
         raise ValueError("Azure credentials (key or endpoint) are missing. Check your environment variables.")
