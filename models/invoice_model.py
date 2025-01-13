@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, Float, Date, TIMESTAMP, JS
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from models.database_init import Base
+from models.invoice_items_association import invoice_item_association
 
 class Invoice(Base):
     __tablename__ = "invoices"
@@ -18,6 +19,6 @@ class Invoice(Base):
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
     
     #relationship
-    invoice_items = relationship("InvoiceItems", back_populates="invoice") 
-    invoice_type = relationship("InvoiceTypes", back_populates="invoices") 
+    invoice_type = relationship("InvoiceTypes", back_populates="invoices")
+    invoice_items = relationship("InvoiceItems", secondary=invoice_item_association, back_populates="invoices")
 
