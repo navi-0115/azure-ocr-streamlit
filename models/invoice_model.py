@@ -3,6 +3,12 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from models.database_config import Base
 
+class InvoiceItemsAssociation(Base):
+    __tablename__ = "invoice_items_association"
+    id = Column(Integer, primary_key=True, index=True)
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=False)
+    invoice_item_id = Column(Integer, ForeignKey("invoice_items.id"), nullable=False)
+
 class Invoice(Base):
     __tablename__ = "invoices"
 
@@ -18,7 +24,11 @@ class Invoice(Base):
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
     # Define the relationship with InvoiceItems
-    invoice_items = relationship("InvoiceItem", back_populates="invoice", cascade="all, delete-orphan")
+    invoice_items = relationship(
+        "InvoiceItems",
+        secondary="invoice_items_association",
+        back_populates="invoices"
+    )
 
 class InvoiceItem(Base):
     __tablename__ = "invoice_items"
@@ -33,4 +43,8 @@ class InvoiceItem(Base):
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
     # Define the relationship back to Invoice
-    invoice = relationship("Invoice", back_populates="invoice_items")
+    invoices = relationship(
+        "Invoice",
+        secondary="invoice_items_association",
+        back_populates="invoice_items"
+    )
