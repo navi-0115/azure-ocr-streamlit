@@ -29,6 +29,8 @@ class InvoiceItem(Base):
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Float, nullable=False)
     amount = Column(Float, nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
+    updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
     # Define the relationship back to Invoice
     invoice = relationship("Invoice", back_populates="invoice_items")
