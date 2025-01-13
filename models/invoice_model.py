@@ -16,3 +16,5 @@ class Invoice(Base):
     created_at = Column(TIMESTAMP, nullable=False, default=func.now())
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
     
+    #relationship
+
