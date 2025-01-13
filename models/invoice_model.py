@@ -52,11 +52,11 @@ class InvoiceItem(Base):
         back_populates="invoice_items"
     )
 
-    class InvoiceTypes(Base):
-        __tablename__ = "invoice_types"
-        id = Column(Integer, primary_key=True, index=True)
-        name = Column(String(50), nullable=False)
-        created_at = Column(TIMESTAMP, nullable=False, default=func.now())
-        updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
+class InvoiceTypes(Base):
+    __tablename__ = "invoice_types"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(50), nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
+    updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
         
-        invoices = relationship("Invoice", back_populates="invoice_types")
+    invoices = relationship("Invoice", back_populates="invoice_types")
