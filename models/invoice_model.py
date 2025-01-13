@@ -8,6 +8,8 @@ class InvoiceItemsAssociation(Base):
     id = Column(Integer, primary_key=True, index=True)
     invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=False)
     invoice_item_id = Column(Integer, ForeignKey("invoice_items.id"), nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False, default=func.now())
+    updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
 class Invoice(Base):
     __tablename__ = "invoices"
