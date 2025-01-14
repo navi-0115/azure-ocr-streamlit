@@ -7,6 +7,12 @@ def parse_invoice_data(structured_data):
     """
     print("structured data in parsing logic:", structured_data)
     parsed_data = {}
+    
+    def safe_float(value):
+        try:
+            return float(value.replace(",", ""))
+        except (ValueError, AttributeError):
+            return 0.0
 
     
     # Extract and process fields
@@ -14,9 +20,9 @@ def parse_invoice_data(structured_data):
     parsed_data["unified_number"] = structured_data.get("unified_number", "")
     parsed_data["issue_date"] = convert_date_format(structured_data.get("issue_date", ""))
     parsed_data["invoice_type"] = structured_data.get("invoice_type", "")
-    parsed_data["total_before_tax"] = float(structured_data.get("total_before_tax", "0").replace(",", ""))
-    parsed_data["tax"] = float(structured_data.get("tax", "0").replace(",", ""))
-    parsed_data["total_after_tax"] = float(structured_data.get("total_after_tax", "0").replace(",", ""))
+    parsed_data["total_before_tax"] = safe_float(structured_data.get("total_before_tax", "0"))
+    parsed_data["tax"] = safe_float(structured_data.get("tax", "0"))
+    parsed_data["total_after_tax"] = safe_float(structured_data.get("total_after_tax", "0"))
 
     # Process invoice items
     parsed_data["invoice_items"] = []
@@ -24,8 +30,8 @@ def parse_invoice_data(structured_data):
         parsed_data["invoice_items"].append({
             "item_name": item.get("item_name", ""),
             "quantity": int(item.get("quantity", "0")),
-            "unit_price": float(item.get("unit_price", "0").replace(",", "")),
-            "amount": float(item.get("amount", "0").replace(",", "")),
+            "unit_price": safe_float(item.get("unit_price", "0")),
+            "amount": safe_float(item.get("amount", "0")),
         })
 
     print("parsed data in file logic:", parsed_data)

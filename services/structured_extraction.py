@@ -58,9 +58,9 @@ def extract_structured_data(result):
             # remove space in invoice type
             invoice_type = fields.get("invoice_type", {}).get("content", "").strip()
             structured_data["invoice_type"] = invoice_type.replace(" ", "")
-            structured_data["total_before_tax"] = fields.get("total_before_tax", {}).get("content", "").strip()
-            structured_data["tax"] = fields.get("tax", {}).get("content", "").strip()
-            structured_data["total_after_tax"] = fields.get("total_after_tax", {}).get("content", "").strip()
+            structured_data["total_before_tax"] = fields.get("total_before_tax", {}).get("content", "0").strip()
+            structured_data["tax"] = fields.get("tax", {}).get("content", "0").strip()
+            structured_data["total_after_tax"] = fields.get("total_after_tax", {}).get("content", "0").strip()
 
             # Extract invoice items
             invoice_items = []
