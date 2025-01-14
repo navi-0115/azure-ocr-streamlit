@@ -7,6 +7,8 @@ from services.structured_parse import parse_invoice_data
 from services.database_service import store_invoice_data, get_recent_invoices
 from models.database_config import get_db_session  
 import os
+from pdf2image import convert_from_path
+from PIL import Image
 
 # Load environment variables
 load_dotenv()
