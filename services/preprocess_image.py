@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 def adjust_gamma(image, gamma=1.0):
@@ -17,8 +16,7 @@ def preprocess_image(image):
 
     close_morphed = cv2.morphologyEx(adaptive_threshold, cv2.MORPH_CLOSE, kernel, iterations=1)
     kernel_erosion = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
-    dilate = cv2.erode(close_morphed, kernel_erosion, iterations=1)
-    # soft_edges = cv2.GaussianBlur(dilate, (1, 1), 0)
+    final_image = cv2.erode(close_morphed, kernel_erosion, iterations=1)
 
-    
-    return denoised
+    # Return the final preprocessed image
+    return final_image
