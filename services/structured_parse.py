@@ -23,13 +23,13 @@ def parse_invoice_data(structured_data):
         try:
             return float(clean_field(value).replace(",", ""))
         except (ValueError, AttributeError):
-            return 0.0
+            return 0
 
     # Extract and process fields
-    parsed_data["invoice_number"] = clean_field(structured_data.get("invoice_number", ""))
+    parsed_data["invoice_number"] = structured_data.get("invoice_number", "")
     parsed_data["unified_number"] = clean_field(structured_data.get("unified_number", ""))
     parsed_data["issue_date"] = convert_date_format(clean_field(structured_data.get("issue_date", "")))
-    parsed_data["invoice_type"] = clean_field(structured_data.get("invoice_type", ""))
+    parsed_data["invoice_type"] = structured_data.get("invoice_type", "")
     parsed_data["total_before_tax"] = safe_float(structured_data.get("total_before_tax", "0"))
     parsed_data["tax"] = safe_float(structured_data.get("tax", "0"))
     parsed_data["total_after_tax"] = safe_float(structured_data.get("total_after_tax", "0"))

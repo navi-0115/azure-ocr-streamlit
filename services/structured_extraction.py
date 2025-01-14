@@ -53,14 +53,17 @@ def extract_structured_data(result):
         for document in result.documents:
             # Extract fields from the document
             fields = document.fields
-            structured_data["invoice_number"] = fields.get("invoice_number", {}).get("content", "").strip()
+            # remove space in invoice_number
+            invoice_number = fields.get("invoice_number", {}).get("content", "").strip()
+            invoice_number = re.sub(r'\s+', '', invoice_number)
+            structured_data["invoice_number"] = invoice_number
+            # unified_number
             structured_data["unified_number"] = fields.get("unified_number", {}).get("content", "").strip()
             # remove space in issue_date
             issue_date = fields.get("issue_date", {}).get("content", "").strip()
             # Remove all spaces and non-visible characters
             issue_date = re.sub(r'\s+', '', issue_date)
             structured_data["issue_date"] = issue_date
-            # structured_data["issue_date"] = fields.get("issue_date", {}).get("content", "").strip()
             # remove space in invoice type
             invoice_type = fields.get("invoice_type", {}).get("content", "").strip()
             structured_data["invoice_type"] = invoice_type.replace(" ", "")

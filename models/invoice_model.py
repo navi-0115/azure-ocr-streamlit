@@ -32,12 +32,6 @@ class Invoice(Base):
     invoice_types = relationship("InvoiceTypes", back_populates="invoices")
     
     invoice_items_association = relationship("InvoiceItemsAssociation", back_populates="invoice")
-    
-    # invoice_items = relationship(
-    #     "InvoiceItem",
-    #     secondary="invoice_items_association",
-    #     back_populates="invoices"
-    # )
 
 class InvoiceItem(Base):
     __tablename__ = "invoice_items"
@@ -51,13 +45,6 @@ class InvoiceItem(Base):
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
 
     invoice_items_association = relationship("InvoiceItemsAssociation", back_populates="invoice_item")
-
-    # Many-to-many relationship to Invoice through InvoiceItemsAssociation
-    # invoices = relationship(
-    #     "Invoice",
-    #     secondary="invoice_items_association",
-    #     back_populates="invoice_items"
-    # )
 
 class InvoiceTypes(Base):
     __tablename__ = "invoice_types"
