@@ -74,10 +74,11 @@ def get_recent_invoices(db: Session, days: int = 30):
     start_date = datetime.now() - timedelta(days=days)
     invoices = db.query(Invoice).filter(Invoice.created_at >= start_date).all()
 
-    # Convert SQLAlchemy model objects to dictionaries
-    invoice_dicts = []
+    # Convert SQLAlchemy model objects to a flattened list of dictionaries
+    flattened_data = []
     for invoice in invoices:
-        invoice_dict = {
+        # Extract invoice data
+        invoice_data = {
             "invoice_number": invoice.invoice_number,
             "invoice_type": invoice.invoice_types.name if invoice.invoice_types else None,
             "unified_number": invoice.unified_number,
@@ -88,9 +89,20 @@ def get_recent_invoices(db: Session, days: int = 30):
             "created_at": invoice.created_at.isoformat() if invoice.created_at else None,
             "updated_at": invoice.updated_at.isoformat() if invoice.updated_at else None,
         }
-        invoice_dicts.append(invoice_dict)
 
-    return invoice_dicts
+        # Extract invoice items data
+        for association in invoice.invoice_items_association: 
+            invoice_item = association.invoice_item  
+            item_data = {
+                "item_name": invoice_item.item_name,
+                "quantity": invoice_item.quantity,
+                "unit_price": invoice_item.unit_price,
+                "amount": invoice_item.amount,
+            }
+            flattened_row = {**invoice_data, **item_data}
+            flattened_data.append(flattened_row)
+
+    return flattened_data
 
 # from datetime import datetime, timedelta
 # from sqlalchemy.orm import Session

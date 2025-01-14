@@ -10,6 +10,9 @@ class InvoiceItemsAssociation(Base):
     invoice_item_id = Column(Integer, ForeignKey("invoice_items.id"), nullable=False)
     created_at = Column(TIMESTAMP, nullable=False, default=func.now())
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())
+    
+    invoice = relationship("Invoice", back_populates="invoice_items_association")
+    invoice_item = relationship("InvoiceItem", back_populates="invoice_items_association")
 
 class Invoice(Base):
     __tablename__ = "invoices"
@@ -27,6 +30,8 @@ class Invoice(Base):
 
     # Define the relationship
     invoice_types = relationship("InvoiceTypes", back_populates="invoices")
+    
+    invoice_items_association = relationship("InvoiceItemsAssociation", back_populates="invoice")
     
     invoice_items = relationship(
         "InvoiceItem",

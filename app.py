@@ -51,9 +51,10 @@ if uploaded_file is not None:
         recent_df = pd.DataFrame(recent_invoices) 
 
         # Provide download link
+        csv_data=recent_df.to_csv(index=False).encoding("utf-8-sig")
         st.download_button(
             label="Download Recent Invoices (Last 30 Days)",
-            data=recent_df.to_csv(index=False).encode("utf-8"),
+            data=csv_data.encode("utf-8sig"),
             file_name="recent_invoices.csv",
             mime="text/csv",
 )
