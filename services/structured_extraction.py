@@ -68,7 +68,7 @@ def extract_structured_data(result):
             invoice_type = fields.get("invoice_type", {}).get("content", "").strip()
             # Remove all spaces and non-visible characters
             invoice_type = re.sub(r'\s+', '', invoice_type)
-            structured_data["invoice_type"] = invoice_type.replace(" ", "")
+            structured_data["invoice_type"] = invoice_type
             structured_data["total_before_tax"] = fields.get("total_before_tax", {}).get("content", "").strip()
             structured_data["tax"] = fields.get("tax", {}).get("content", "0").strip()
             structured_data["total_after_tax"] = fields.get("total_after_tax", {}).get("content", "").strip()
