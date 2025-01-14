@@ -23,6 +23,8 @@ os.makedirs("outputs", exist_ok=True)
 st.title("Invoice OCR and Data Extraction")
 
 # Initialize session state
+if 'processed_files' not in st.session_state:
+    st.session_state.processed_files = set() 
 if 'processed' not in st.session_state:
     st.session_state.processed = False
 
@@ -30,9 +32,14 @@ if 'processed' not in st.session_state:
 uploaded_files = st.file_uploader(
     "Upload PDF or image invoices", 
     type=["pdf", "jpg", "jpeg", "png"], 
-    accept_multiple_files=True
+    accept_multiple_files=True,
+    key="file_uploader"
 )
-
+# Reset session state if new files are uploaded
+if uploaded_files and st.session_state.get("previous_files") != uploaded_files:
+    st.session_state.processed = False
+    st.session_state.previous_files = uploaded_files
+    
 # Prepare CSV download for last 30 days
 db = get_db_session()
 recent_invoices = get_recent_invoices(db, days=30)  
@@ -71,7 +78,7 @@ if uploaded_files and not st.session_state.processed:
                     image.save(image_path, 'JPEG')
 
                     # Preprocess the image
-                    image_np = np.array(image)  # Convert PIL image to NumPy array
+                    image_np = np.array(image)
                     preprocessed_image = preprocess_image(image_np)
                     preprocessed_image_path = image_path.replace('.jpg', '_preprocessed.jpg')
                     cv2.imwrite(preprocessed_image_path, preprocessed_image)
@@ -82,7 +89,6 @@ if uploaded_files and not st.session_state.processed:
                         if structured_data is None:
                             structured_data = page_data
                         else:
-                            # Combine data from multiple pages
                             structured_data.update(page_data)
 
             elif uploaded_file.type in ["image/jpeg", "image/png"]:
@@ -90,7 +96,7 @@ if uploaded_files and not st.session_state.processed:
                 image = Image.open(uploaded_file)
 
                 # Preprocess the image
-                image_np = np.array(image)  # Convert PIL image to NumPy array
+                image_np = np.array(image) 
                 preprocessed_image = preprocess_image(image_np)
                 preprocessed_image_path = os.path.join("uploads", f'preprocessed_{uploaded_file.name}')
                 cv2.imwrite(preprocessed_image_path, preprocessed_image)
