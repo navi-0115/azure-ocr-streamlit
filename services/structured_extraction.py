@@ -3,6 +3,7 @@ from azure.ai.documentintelligence import DocumentIntelligenceClient
 import os
 import json
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 
@@ -54,13 +55,18 @@ def extract_structured_data(result):
             fields = document.fields
             structured_data["invoice_number"] = fields.get("invoice_number", {}).get("content", "").strip()
             structured_data["unified_number"] = fields.get("unified_number", {}).get("content", "").strip()
-            structured_data["issue_date"] = fields.get("issue_date", {}).get("content", "").strip()
+            # remove space in issue_date
+            issue_date = fields.get("issue_date", {}).get("content", "").strip()
+            # Remove all spaces and non-visible characters
+            issue_date = re.sub(r'\s+', '', issue_date)
+            structured_data["issue_date"] = issue_date
+            # structured_data["issue_date"] = fields.get("issue_date", {}).get("content", "").strip()
             # remove space in invoice type
             invoice_type = fields.get("invoice_type", {}).get("content", "").strip()
             structured_data["invoice_type"] = invoice_type.replace(" ", "")
-            structured_data["total_before_tax"] = fields.get("total_before_tax", {}).get("content", "0").strip()
+            structured_data["total_before_tax"] = fields.get("total_before_tax", {}).get("content", "").strip()
             structured_data["tax"] = fields.get("tax", {}).get("content", "0").strip()
-            structured_data["total_after_tax"] = fields.get("total_after_tax", {}).get("content", "0").strip()
+            structured_data["total_after_tax"] = fields.get("total_after_tax", {}).get("content", "").strip()
 
             # Extract invoice items
             invoice_items = []
