@@ -41,8 +41,6 @@ st.download_button(
 
 if uploaded_file is not None and not st.session_state.processed:
     try:
-        
-
         # Extract text using Azure OCR
         structured_data = extract_text(uploaded_file)
         print("streamlit structured data:", structured_data)
