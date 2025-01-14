@@ -1,8 +1,8 @@
-"""modify-invoice-model-to-traditional-chinese-nullable
+"""adjust invoice table
 
-Revision ID: 4a2d1033c62b
+Revision ID: 5259ae4ce1da
 Revises: 
-Create Date: 2024-12-17 09:41:12.918982
+Create Date: 2025-01-10 14:44:04.928475
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4a2d1033c62b'
+revision: str = '5259ae4ce1da'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -23,20 +23,12 @@ def upgrade() -> None:
     op.create_table('invoices',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('invoice_number', sa.String(length=50), nullable=False),
-    sa.Column('buyer_name', sa.String(length=255), nullable=False),
-    sa.Column('buyer_address', sa.Text(), nullable=True),
+    sa.Column('unified_number', sa.String(length=50), nullable=True),
     sa.Column('issue_date', sa.Date(), nullable=True),
-    sa.Column('order_id', sa.String(length=50), nullable=True),
     sa.Column('items', sa.Text(), nullable=True),
-    sa.Column('quantity', sa.Integer(), nullable=True),
-    sa.Column('unit_price', sa.Float(), nullable=True),
     sa.Column('amount', sa.Float(), nullable=True),
-    sa.Column('subtotal', sa.Float(), nullable=True),
-    sa.Column('discount', sa.Float(), nullable=True),
-    sa.Column('shipping_cost', sa.Float(), nullable=True),
-    sa.Column('outstanding_balance', sa.Float(), nullable=True),
+    sa.Column('tax', sa.Float(), nullable=True),
     sa.Column('total_amount', sa.Float(), nullable=True),
-    sa.Column('notes', sa.Text(), nullable=True),
     sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
