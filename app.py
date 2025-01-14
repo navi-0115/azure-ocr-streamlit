@@ -17,9 +17,13 @@ os.makedirs("outputs", exist_ok=True)
 # Streamlit app
 st.title("Invoice OCR and Data Extraction")
 
+# Initialize session state
+if 'processed' not in st.session_state:
+    st.session_state.processed = False
+
 # Upload PDF
 uploaded_file = st.file_uploader("Upload a PDF invoice", type=["pdf", "jpg", "png"])
-if uploaded_file is not None:
+if uploaded_file is not None and not st.session_state.processed:
     try:
         # Extract text using Azure OCR
         structured_data = extract_text(uploaded_file)
@@ -43,6 +47,8 @@ if uploaded_file is not None:
         # invoice_df["invoice_number"] = parsed_data.get("invoice_number")
         # st.write("Invoice Items Table:")
         # st.dataframe(invoice_df)
+        
+        st.session_state.processed = True
 
         # Prepare CSV download for last 30 days
         db = get_db_session()
@@ -51,10 +57,10 @@ if uploaded_file is not None:
         recent_df = pd.DataFrame(recent_invoices) 
 
         # Provide download link
-        csv_data=recent_df.to_csv(index=False).encoding("utf-8-sig")
+        csv_data=recent_df.to_csv(index=False, encoding="utf-8-sig")
         st.download_button(
             label="Download Recent Invoices (Last 30 Days)",
-            data=csv_data.encode("utf-8sig"),
+            data=csv_data.encode("utf-8-sig"),
             file_name="recent_invoices.csv",
             mime="text/csv",
 )
