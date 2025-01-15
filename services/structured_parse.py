@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 from utils.normalize_invoice_type import normalize_invoice_type
+from utils.validate_invoice_number import validate_invoice_number
 
 def parse_invoice_data(structured_data):
     """
@@ -46,7 +47,16 @@ def parse_invoice_data(structured_data):
             "amount": safe_float(item.get("amount", "0")),
         })
         
-
+    # Validate invoice number
+    invoice_type_code = 21  #invoice type 21
+    is_valid, validation_message = validate_invoice_number(
+        parsed_data["invoice_number"],
+        parsed_data["issue_date"],
+        invoice_type_code
+    )
+    if not is_valid:
+        raise ValueError(f"Invoice validation failed: {validation_message}")
+    
     print("parsed data in file logic:", parsed_data)
     return parsed_data
 
