@@ -115,18 +115,22 @@ if uploaded_files and not st.session_state.processed:
 
             # Parse the structured data
             if structured_data:
-                parsed_data = parse_invoice_data(structured_data)
-                st.write(f"Parsed Data for {uploaded_file.name}:")
-                st.json(parsed_data)
-                print(f"streamlit parsed data for {uploaded_file.name}:", parsed_data)
+                try:
+                    parsed_data = parse_invoice_data(structured_data)
+                    st.write(f"Parsed Data for {uploaded_file.name}:")
+                    st.json(parsed_data)
+                    print(f"streamlit parsed data for {uploaded_file.name}:", parsed_data)
 
-                # Store the parsed data in the database
-                store_invoice_data(parsed_data)
-                st.success(f"Data from {uploaded_file.name} stored in the database!")
-                print(f"Data from {uploaded_file.name} stored in the database!")
+                    # Store the parsed data in the database
+                    store_invoice_data(parsed_data)
+                    st.success(f"Data from {uploaded_file.name} stored in the database!")
+                    print(f"Data from {uploaded_file.name} stored in the database!")
 
-                # Append parsed data to the list
-                all_parsed_data.append(parsed_data)
+                    # Append parsed data to the list
+                    all_parsed_data.append(parsed_data)
+                except ValueError as e:
+                    st.error(f"Validation error for {uploaded_file.name}: {str(e)}")
+                    continue
 
         st.session_state.processed = True
 
