@@ -49,6 +49,7 @@ class InvoiceItem(Base):
 class InvoiceTypes(Base):
     __tablename__ = "invoice_types"
     id = Column(Integer, primary_key=True, index=True)
+    code = Column(String(10), unique=True, nullable=True)
     name = Column(String(50), nullable=False)
     created_at = Column(TIMESTAMP, nullable=False, default=func.now())
     updated_at = Column(TIMESTAMP, nullable=False, default=func.now(), onupdate=func.now())

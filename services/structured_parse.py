@@ -1,5 +1,7 @@
 import re
 from datetime import datetime
+from utils.normalize_invoice_type import normalize_invoice_type
+from utils.validate_invoice_number import validate_invoice_number
 
 def parse_invoice_data(structured_data):
     """
@@ -29,7 +31,8 @@ def parse_invoice_data(structured_data):
     parsed_data["invoice_number"] = structured_data.get("invoice_number", "")
     parsed_data["unified_number"] = clean_field(structured_data.get("unified_number", ""))
     parsed_data["issue_date"] = convert_date_format(clean_field(structured_data.get("issue_date", "")))
-    parsed_data["invoice_type"] = structured_data.get("invoice_type", "")
+    raw_invoice_type = structured_data.get("invoice_type", "")
+    parsed_data["invoice_type"] = normalize_invoice_type(raw_invoice_type)
     parsed_data["total_before_tax"] = safe_float(structured_data.get("total_before_tax", "0"))
     parsed_data["tax"] = safe_float(structured_data.get("tax", "0"))
     parsed_data["total_after_tax"] = safe_float(structured_data.get("total_after_tax", "0"))
@@ -43,7 +46,17 @@ def parse_invoice_data(structured_data):
             "unit_price": safe_float(item.get("unit_price", "0")),
             "amount": safe_float(item.get("amount", "0")),
         })
-
+        
+    # Validate invoice number
+    invoice_type_code = 21  #invoice type 21
+    is_valid, validation_message = validate_invoice_number(
+        parsed_data["invoice_number"],
+        parsed_data["issue_date"],
+        invoice_type_code
+    )
+    if not is_valid:
+        raise ValueError(f"Invoice validation failed: {validation_message}")
+    
     print("parsed data in file logic:", parsed_data)
     return parsed_data
 
