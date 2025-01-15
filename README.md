@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a web application that allows users to upload documents (PDFs or images) and extract text from them using Azure Cognitive Services. The extracted text is then parsed and stored in a PostgreSQL database for future reference. The application also provides a download link for recent invoices in CSV format.
+This project is a tool that allows users to upload documents and extract text from them using Azure Document Intelligent. The extracted text is processed to identify key invoice data, such as invoice numbers, dates, and amounts etc. The data is then stored into a database using PostgreSQL for future reference.
 
 ## Requirements
 
