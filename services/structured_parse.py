@@ -45,6 +45,7 @@ def parse_invoice_data(structured_data):
             "unit_price": safe_float(item.get("unit_price", "0")),
             "amount": safe_float(item.get("amount", "0")),
         })
+        
 
     print("parsed data in file logic:", parsed_data)
     return parsed_data

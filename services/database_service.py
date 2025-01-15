@@ -10,11 +10,16 @@ def store_invoice_data(data):
         invoice_type_name = data.get("invoice_type") 
         if not invoice_type_name:
             raise ValueError("Invoice type is missing in the data.")
+        
+        # Validate invoice type against hardcoded INVOICE_TYPES
+        invoice_type_code = None
+        for code, name in INVOICE_TYPES.items():
+            if name == invoice_type_name:
+                invoice_type_code = code
+                break
 
-        # Validate invoice type against INVOICE_TYPES values
-        # valid_invoice_types = list(INVOICE_TYPES.values())
-        # if invoice_type_name not in valid_invoice_types:
-        #     raise ValueError(f"Invalid invoice type: {invoice_type_name}. Valid types are: {valid_invoice_types}")
+        if not invoice_type_code:
+            raise ValueError(f"Invalid invoice type: {invoice_type_name}. Valid types are: {list(INVOICE_TYPES.values())}")
 
         invoice_type = session.query(InvoiceTypes).filter_by(name=invoice_type_name).first()
         if not invoice_type:
