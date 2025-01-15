@@ -7,6 +7,7 @@ from services.structured_parse import parse_invoice_data
 from services.database_service import store_invoice_data, get_recent_invoices
 from models.database_config import get_db_session  
 from services.preprocess_image import preprocess_image
+from services.insert_invoice_types import initialize_invoice_types
 import os
 from pdf2image import convert_from_bytes
 from PIL import Image
@@ -21,6 +22,9 @@ os.makedirs("outputs", exist_ok=True)
 
 # Streamlit app
 st.title("Invoice OCR and Data Extraction")
+
+# Initialize hardcoded invoice types
+initialize_invoice_types()
 
 # Initialize session state
 if 'processed_files' not in st.session_state:
